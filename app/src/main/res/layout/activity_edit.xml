@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.edqueeneland.amtlite.EditActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="Descrizione"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
+        android:id="@+id/editDesc" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_below="@+id/editDesc"
+        android:layout_alignLeft="@+id/editDesc"
+        android:layout_alignStart="@+id/editDesc"
+        android:layout_marginTop="36dp"
+        android:id="@+id/editNumero"
+        android:hint="Numero Bus" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_below="@+id/editNumero"
+        android:layout_alignRight="@+id/editNumero"
+        android:layout_alignEnd="@+id/editNumero"
+        android:layout_marginTop="39dp"
+        android:id="@+id/editCodice"
+        android:hint="Codice Fermata" />
+
+    <Button
+        android:text="Salva"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editCodice"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="83dp"
+        android:id="@+id/salva" />
+</RelativeLayout>
