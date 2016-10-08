@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class BusDbHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "bus";
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 10;
 
     public BusDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -21,12 +21,10 @@ public class BusDbHelper extends SQLiteOpenHelper{
                 + "NAME TEXT, "
                 + "BNUMBER INTEGER, "
                 + "STOPID INTEGER);");
-        //TODO riempire db
-        ContentValues busValues = new ContentValues();
-        busValues.put("NAME", "caricamento");
-        busValues.put("BNUMBER", 23);
-        busValues.put("STOPID", 4234);
-        db.insert("STOPS", null, busValues);
+        db.execSQL("DROP TABLE IF EXISTS LAST");
+        db.execSQL("CREATE TABLE IF NOT EXISTS LAST(_id INTEGER PRIMARY KEY, "
+                + "BNUMBER INTEGER, "
+                + "STOPID INTEGER);");
 
     }
     @Override
@@ -36,11 +34,10 @@ public class BusDbHelper extends SQLiteOpenHelper{
                 + "NAME TEXT, "
                 + "BNUMBER INTEGER, "
                 + "STOPID INTEGER);");
-        ContentValues busValues = new ContentValues();
-        busValues.put("NAME", "caricamento");
-        busValues.put("BNUMBER", 23);
-        busValues.put("STOPID", 4234);
-        db.insert("STOPS", null, busValues);
+        db.execSQL("DROP TABLE IF EXISTS LAST");
+        db.execSQL("CREATE TABLE IF NOT EXISTS LAST(_id INTEGER PRIMARY KEY, "
+                + "BNUMBER INTEGER, "
+                + "STOPID INTEGER);");
     }
 
 

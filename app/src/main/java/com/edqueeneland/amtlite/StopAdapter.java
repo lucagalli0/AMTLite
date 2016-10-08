@@ -1,7 +1,14 @@
 package com.edqueeneland.amtlite;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 public class StopAdapter extends RecyclerView.Adapter<SetViewHolder>{
+
 
     private Activity activity;
     List<Stop> stops;
@@ -33,7 +41,19 @@ public class StopAdapter extends RecyclerView.Adapter<SetViewHolder>{
             @Override
             public void onClick(View v) {
                 StopActivity.bar.setVisibility(View.VISIBLE);
-                new ParseAMT(v.getContext()).execute(String.valueOf(stops.get(position).getStopId()), String.valueOf(stops.get(position).getbNumber()));
+                ContentValues last = new ContentValues();
+                last.put("_id", "0");
+                last.put("BNUMBER", String.valueOf(stops.get(position).getbNumber()));
+                last.put("STOPID", String.valueOf(stops.get(position).getStopId()));
+                SQLiteOpenHelper helper = new BusDbHelper(v.getContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
+                db.insertWithOnConflict("LAST", null, last, SQLiteDatabase.CONFLICT_REPLACE);
+//                Cursor cursor;
+//                cursor = db.query("LAST",new String[] {"_id", "BNUMBER", "STOPID"}, null, null, null, null, null);
+//                cursor.moveToFirst();
+//                Log.d("Adapter", String.valueOf(cursor.getInt(0)) + " " + String.valueOf(cursor.getInt(1)) + " " + String.valueOf(cursor.getInt(2)));
+                db.close();
+                new ParseAMT(v.getContext()).execute(String.valueOf(stops.get(position).getStopId()), String.valueOf(stops.get(position).getbNumber()), "false");
             }
         });
     }

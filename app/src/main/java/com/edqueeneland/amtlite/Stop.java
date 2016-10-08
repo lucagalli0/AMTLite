@@ -1,12 +1,12 @@
 package com.edqueeneland.amtlite;
 
-public class Stop {
-    int id;
+class Stop {
+    private int id;
     private String name;
     private int bNumber;
     private int stopId;
 
-    public Stop(int id, String name, int bNumber, int stopId) {
+    Stop(int id, String name, int bNumber, int stopId) {
         this.id = id;
 
         this.name = name;
@@ -40,7 +40,7 @@ public class Stop {
         this.name = name;
     }
 
-    public int getbNumber() {
+    int getbNumber() {
         return bNumber;
     }
 
@@ -48,7 +48,7 @@ public class Stop {
         this.bNumber = bNumber;
     }
 
-    public int getStopId() {
+    int getStopId() {
         return stopId;
     }
 

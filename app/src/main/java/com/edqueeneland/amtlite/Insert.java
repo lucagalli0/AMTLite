@@ -1,6 +1,9 @@
 package com.edqueeneland.amtlite;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +53,13 @@ public class Insert extends AppCompatActivity {
                 String nFermata = fermata.getText().toString();
                 String nBus = bus.getText().toString();
                 if (!nFermata.equals("") && !nBus.equals("")) {
-                    new ParseAMT(Insert.this).execute(nFermata, nBus);
+                    ContentValues last = new ContentValues();
+                    last.put("BNUMBER", nBus);
+                    last.put("STOPID", nFermata);
+                    SQLiteOpenHelper helper = new BusDbHelper(Insert.this);
+                    SQLiteDatabase db = helper.getWritableDatabase();
+                    db.update("LAST", last, "_id = ?", new String[]{"0"});
+                    new ParseAMT(Insert.this).execute(nFermata, nBus, "false");
                 }
                 else Toast.makeText(Insert.this, "Inserisci numeri bus e fermata", Toast.LENGTH_LONG);
             }
