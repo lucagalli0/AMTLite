@@ -1,12 +1,18 @@
 package com.edqueeneland.amtlite;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -21,19 +27,20 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
 
     Context context;
     ProgressBar bar;
+    Boolean update;
 
     public ParseAMT(Context context) {
         this.context = context;
         bar = new ProgressBar(context);
     }
     @Override
-    protected void onPreExecute(){
-       // bar.setVisibility(View.VISIBLE);
-    }
+    protected void onPreExecute(){}
 
     @Override
     protected List<String> doInBackground(String... param) {
-        ArrayList<String> lista = new ArrayList<>();
+        update = Boolean.valueOf(param[2]);
+        Log.d("BACKGROUND", String.valueOf(update));
+        List<String> lista = new ArrayList<>();
         try {
             Log.d("DBG" , "try: " + param[0]);
             Connection.Response response = Jsoup.connect("http://www.amt.genova.it/amt/servizi/passaggi_tel.php")
@@ -49,6 +56,9 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
             Log.d("DBG", "orario: " + orario.toString());
             if (orario.hasText()) {
                 String[] ora = orario.text().split(" ");
+//                for (String s : ora) {
+//                    lista.add(s);
+//                }
                 lista = new ArrayList<String>(Arrays.asList(ora));
                 Log.d("DBG", ora.toString());
             }
@@ -65,16 +75,21 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
-    protected void onPostExecute(List<String> l) {
-        String classe = context.getClass().getSimpleName();
-        Log.d("DBG", "post " + l.toString() + " "+ classe);
-        if (classe.equals("Insert"))
-            Insert.bar.setVisibility(View.INVISIBLE);
-        else
-            StopActivity.bar.setVisibility(View.INVISIBLE);
-        Intent intent = new Intent(context, Results.class);
-        String[] a = l.toArray(new String[l.size()]);
-        intent.putExtra("RIS", a);
-        context.startActivity(intent);
+    protected void onPostExecute(List<String> result) {
+        Log.d("UPDATE", String.valueOf(update));
+        if (!update) {
+            String classe = context.getClass().getSimpleName();
+            if (classe.equals("Insert"))
+                Insert.bar.setVisibility(View.INVISIBLE);
+            else
+                StopActivity.bar.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(context, Results.class);
+            String[] res = result.toArray(new String[result.size()]);
+            intent.putExtra("RIS", res);
+            context.startActivity(intent);
+        }
+        else {
+            Results.rip = result.toString();
+        }
     }
 }
