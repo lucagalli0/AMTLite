@@ -25,6 +25,7 @@ import java.util.Locale;
 
 public class ParseAMT extends AsyncTask<String, Void, List<String>> {
 
+    private static final int TIMEOUT = 7000;
     Context context;
     ProgressBar bar;
     Boolean update;
@@ -44,7 +45,7 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
         try {
             Log.d("DBG" , "try: " + param[0]);
             Connection.Response response = Jsoup.connect("http://www.amt.genova.it/amt/servizi/passaggi_tel.php")
-                    .timeout(5000)
+                    .timeout(TIMEOUT)
                     .method(Connection.Method.POST)
                     .data("CodiceFermata", param[0])
                     .data("conferma", "Conferma")
@@ -54,19 +55,10 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
             Elements orario;
             orario = response.parse().select(":contains(" + nBus + ") + td +td +td");
             Log.d("DBG", "orario: " + orario.toString());
-            if (orario.hasText()) {
-                String[] ora = orario.text().split(" ");
-//                for (String s : ora) {
-//                    lista.add(s);
-//                }
-                lista = new ArrayList<String>(Arrays.asList(ora));
-                Log.d("DBG", ora.toString());
-            }
-            else {
-
+            if (orario.hasText())
+                lista = new ArrayList<>(Arrays.asList(orario.text()));
+            else
                 lista.add("Nessun bus con quel numero in arrivo :(");
-            }
-
         } catch (IOException e) {
             lista.add("Non sono riuscito a connettermi :(");
         }
@@ -87,9 +79,6 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
             String[] res = result.toArray(new String[result.size()]);
             intent.putExtra("RIS", res);
             context.startActivity(intent);
-        }
-        else {
-            Results.rip = result.toString();
         }
     }
 }
