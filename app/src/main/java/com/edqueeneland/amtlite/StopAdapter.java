@@ -2,13 +2,9 @@ package com.edqueeneland.amtlite;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.res.AssetManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +49,7 @@ public class StopAdapter extends RecyclerView.Adapter<SetViewHolder>{
 //                cursor.moveToFirst();
 //                Log.d("Adapter", String.valueOf(cursor.getInt(0)) + " " + String.valueOf(cursor.getInt(1)) + " " + String.valueOf(cursor.getInt(2)));
                 db.close();
-                new ParseAMT(v.getContext()).execute(String.valueOf(stops.get(position).getStopId()), String.valueOf(stops.get(position).getbNumber()), "false");
+                new ParseAMT(v.getContext()).execute(String.valueOf(stops.get(position).getStopId()), String.valueOf(stops.get(position).getbNumber()));
             }
         });
     }
@@ -73,4 +69,5 @@ public class StopAdapter extends RecyclerView.Adapter<SetViewHolder>{
         notifyItemRemoved(pos);
         notifyItemRangeChanged(pos, stops.size());
     }
+
 }

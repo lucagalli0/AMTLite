@@ -22,7 +22,6 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
     private static final int TIMEOUT = 7000;
     Context context;
     ProgressBar bar;
-    Boolean update;
 
     public ParseAMT(Context context) {
         this.context = context;
@@ -33,8 +32,7 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
 
     @Override
     protected List<String> doInBackground(String... param) {
-        update = Boolean.valueOf(param[2]);
-        Log.d("BACKGROUND", String.valueOf(update));
+
         List<String> lista = new ArrayList<>();
         try {
             Log.d("DBG" , "try: " + param[0]);
@@ -50,7 +48,7 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
             orario = response.parse().select(":contains(" + nBus + ") + td +td +td");
             Log.d("DBG", "orario: " + orario.toString());
             if (orario.hasText())
-                lista = new ArrayList<>(Arrays.asList(orario.text()));
+                lista = new ArrayList<>(Arrays.asList(orario.text().split(" ")));
             else
                 lista.add("Nessun bus con quel numero in arrivo :(");
         } catch (IOException e) {
@@ -62,17 +60,16 @@ public class ParseAMT extends AsyncTask<String, Void, List<String>> {
 
     @Override
     protected void onPostExecute(List<String> result) {
-        Log.d("UPDATE", String.valueOf(update));
-        if (!update) {
-            String classe = context.getClass().getSimpleName();
-            if (classe.equals("Insert"))
-                Insert.bar.setVisibility(View.INVISIBLE);
-            else
-                StopActivity.bar.setVisibility(View.INVISIBLE);
-            Intent intent = new Intent(context, Results.class);
-            String[] res = result.toArray(new String[result.size()]);
-            intent.putExtra("RIS", res);
-            context.startActivity(intent);
-        }
+
+        String classe = context.getClass().getSimpleName();
+        if (classe.equals("Insert"))
+            Insert.bar.setVisibility(View.INVISIBLE);
+        else
+            StopActivity.bar.setVisibility(View.INVISIBLE);
+        Intent intent = new Intent(context, Results.class);
+        String[] res = result.toArray(new String[result.size()]);
+        intent.putExtra("RIS", res);
+        context.startActivity(intent);
+
     }
 }

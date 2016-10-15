@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,7 @@ public class Insert extends AppCompatActivity {
         setContentView(R.layout.activity_insert);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setSubtitle("Inserisci i dati manualmente");
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
         button = (Button) findViewById(R.id.button);
         bar = (ProgressBar) findViewById(R.id.progressBar);
         bar.setVisibility(View.INVISIBLE);
@@ -59,7 +62,7 @@ public class Insert extends AppCompatActivity {
                     SQLiteOpenHelper helper = new BusDbHelper(Insert.this);
                     SQLiteDatabase db = helper.getWritableDatabase();
                     db.update("LAST", last, "_id = ?", new String[]{"0"});
-                    new ParseAMT(Insert.this).execute(nFermata, nBus, "false");
+                    new ParseAMT(Insert.this).execute(nFermata, nBus);
                 }
                 else Toast.makeText(Insert.this, "Inserisci numeri bus e fermata", Toast.LENGTH_LONG);
             }

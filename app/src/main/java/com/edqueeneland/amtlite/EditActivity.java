@@ -6,9 +6,11 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +33,7 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setSubtitle("Aggiungi una fermata preferita");
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.LTGRAY));
 
         editDesc = (EditText) findViewById(R.id.editDesc);
         editNumero = (EditText) findViewById(R.id.editNumero);
